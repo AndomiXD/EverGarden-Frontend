@@ -8,13 +8,15 @@ const MyGarden = () => {
   const [seeds, setSeeds] = useState([])
   const [loading, setLoading] = useState(true)
 
-  useEffect(()=>{
-    useLoaderData()
+    useEffect(() => {
+    loadData()
   }, [])
+
   const loadData = async () => {
     setLoading(true)
     const gardenData = await GetGarden()
     const seedsData = await GetSeeds()
+    
     if(gardenData){
       setGarden(gardenData)
     }
