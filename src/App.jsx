@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Route, Routes } from 'react-router'
+import { Route, Routes } from 'react-router-dom'
 import { CheckSession } from './services/Auth'
 import Nav from './components/Nav'
 import Home from './pages/Home'
