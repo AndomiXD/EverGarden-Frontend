@@ -1,27 +1,24 @@
-import { useState } from 'react'
+import { useState } from "react"
 
 const SeedSidebar = ({ seeds, onPlant }) => {
   const [selected, setSelected] = useState(null)
-  const [slotIndex, setSlotIndex] = useState('')
+  const [slotIndex, setSlotIndex] = useState("")
 
   const handlePlant = () => {
     if (!selected) {
-      alert('Pick a seed first!')
+      alert("Pick a seed first!")
       return
     }
-    const index = slotIndex === '' ? undefined : Number(slotIndex)
+    const index = slotIndex === "" ? undefined : Number(slotIndex)
     onPlant({ seedId: selected._id, slotIndex: index })
-    setSlotIndex('')
+    setSlotIndex("")
   }
 
   return (
     <aside>
       <h3>Seeds</h3>
       {seeds.map((s) => (
-        <div
-          key={s._id}
-          onClick={() => setSelected(s)}
-        >
+        <div key={s._id} onClick={() => setSelected(s)}>
           <strong>{s.name}</strong>
           <p>Cost: {s.cost}</p>
           <p>Reward: {s.reward}</p>
