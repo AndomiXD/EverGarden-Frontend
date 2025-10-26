@@ -1,7 +1,7 @@
 import Client from './api'
 export const GetGarden = async () => {
   try{
-    const res = await Client.get('./gardens/me')
+    const res = await Client.get('/gardens/me')
     return res.data
   }catch(error){
     console.error('Error fetching garden:', error)
