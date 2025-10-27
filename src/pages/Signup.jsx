@@ -5,6 +5,7 @@ import { RegisterUser, SignInUser} from "../services/Auth"
 const Signup = ({ setUser }) => {
   const [form, setForm] = useState({ username:"", email:"", password:""})
   const navigate = useNavigate()
+
   const handleChange = (e) => {
     setForm({...form, [e.target.name]: e.target.value})
   }
