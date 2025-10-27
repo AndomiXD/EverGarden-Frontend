@@ -3,12 +3,13 @@ import GardenSlot from "./GardenSlot"
 
 const GardenGrid = ({ garden, onHarvest})=>{
   return(
-    <div>
-      <h2>My Garden</h2>
+    <div className="garden">
       {garden && garden.slots? (
-        garden.slots.map ((slot, i)=> (
+        <div className="garden-grid">
+        {garden.slots.map ((slot, i) => (
         <GardenSlot key={i} slot={slot} index={i} onHarvest={onHarvest} />
-        ))
+        ))}
+        </div>
       ):(
         <p>No slots yet!</p>
       )}

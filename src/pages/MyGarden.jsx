@@ -45,10 +45,16 @@ const MyGarden = () => {
     return <p>Loading garden...</p>
 
   return (
-    <div>
-      <h2>My Garden</h2>
-      <GardenGrid garden={garden} onHarvest={handleHarvest}/>
+    <div className="page">
+      <h2 className="page-title">My Garden</h2>
+      <div className="garden-layout">
+        <main className="board-wrap">
+          <GardenGrid garden={garden} onHarvest={handleHarvest}/>
+        </main>
+        <aside className="sidebar">
       <SeedSidebar seeds={seeds} onPlant={handlePlant} />
+        </aside>
+      </div>
     </div>
   )
 }
