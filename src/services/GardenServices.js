@@ -1,11 +1,22 @@
 import Client from './api'
 export const GetGarden = async () => {
-  try{
+  try {
     const res = await Client.get('/gardens/me')
     return res.data
-  }catch(error){
-    console.error('Error fetching garden:', error)
+  } catch (error) {
+    const status = error?.response?.status
+    const body = error?.response?.data
+    console.error('GetGarden failed:', status, body)
+    if (status === 404) {
+      try {
+        const created = await Client.post('/gardens')
+        return created.data
+      } catch (e) {
+        console.error('Create garden failed:', e?.response?.status, e?.response?.data)
+      }
+    }
     alert('Could not load garden data.')
+    return null
   }
 }
 export const GetSeeds = async () => {
@@ -13,8 +24,9 @@ export const GetSeeds = async () => {
     const res = await Client.get('/plants')
     return res.data
   }catch (error){
-    console.error('Error fetching seeds:', error)
+  console.error('GetSeeds failed:', error?.response?.status, error?.response?.data || error.message)
     alert('Could not load available seeds.')
+    return []
   }
 }
 export const PlantSeed = async (SeedId, slotIndex) => {

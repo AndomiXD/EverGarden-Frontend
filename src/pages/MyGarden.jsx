@@ -14,20 +14,25 @@ const MyGarden = () => {
 
   const loadData = async () => {
     setLoading(true)
+
     const gardenData = await GetGarden()
-    const seedsData = await GetSeeds()
-    
-    if(gardenData){
+    if (gardenData) {
       setGarden(gardenData)
+    }else {
+      setGarden(null)
     }
-    if(seedsData){
+
+    const seedsData = await GetSeeds()
+    if(Array.isArray(seedsData)){
       setSeeds(seedsData)
+    } else{
+      setSeeds([])
     }
     setLoading(false)
   }
 
-  const handlePlant = async (info) => {
-    await PlantSeed(info.seedId, info.slotIndex)
+  const handlePlant = async ({seedId, slotIndex}) => {
+    await PlantSeed(seedId, slotIndex)
     await loadData()
   }
 
@@ -36,9 +41,8 @@ const MyGarden = () => {
     await loadData()
   }
 
-  if (loading){
+  if (loading)
     return <p>Loading garden...</p>
-  }
 
   return (
     <div>

@@ -17,13 +17,18 @@ const SeedSidebar = ({ seeds, onPlant }) => {
   return (
     <aside>
       <h3>Seeds</h3>
-      {seeds.map((s) => (
+
+      {Array.isArray(seeds) && seeds.length > 0? (
+        seeds.map((s) => (
         <div key={s._id} onClick={() => setSelected(s)}>
           <strong>{s.name}</strong>
           <p>Cost: {s.cost}</p>
           <p>Reward: {s.reward}</p>
         </div>
-      ))}
+      ))
+    ):(
+      <p>No seeds available.</p>
+    )}
 
       <input
         placeholder="slot index (optional)"
