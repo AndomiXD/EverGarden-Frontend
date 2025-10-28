@@ -1,51 +1,70 @@
-import Client from './api'
+import Client from "./api"
+
+const unwrapGarden = (data) => (data?.garden ? data.garden : data)
+
 export const GetGarden = async () => {
   try {
-    const res = await Client.get('/gardens/me')
-    return res.data
+    const res = await Client.get("/gardens/me")
+    return unwrapGarden(res.data)
   } catch (error) {
-    const status = error?.response?.status
-    const body = error?.response?.data
-    console.error('GetGarden failed:', status, body)
-    if (status === 404) {
-      try {
-        const created = await Client.post('/gardens')
-        return created.data
-      } catch (e) {
-        console.error('Create garden failed:', e?.response?.status, e?.response?.data)
-      }
+    if (error?.response?.status === 404) {
+      const created = await Client.post("/gardens/create")
+      return unwrapGarden(created.data)
     }
-    alert('Could not load garden data.')
+    console.error(
+      "GetGarden failed:",
+      error?.response?.status,
+      error?.response?.data || error.message
+    )
+    alert("Could not load garden data.")
     return null
   }
 }
+
 export const GetSeeds = async () => {
-  try{
-    const res = await Client.get('/plants')
+  try {
+    const res = await Client.get("/plants/all")
     return res.data
-  }catch (error){
-  console.error('GetSeeds failed:', error?.response?.status, error?.response?.data || error.message)
-    alert('Could not load available seeds.')
+  } catch (error) {
+    console.error(
+      "GetSeeds failed:",
+      error?.response?.status,
+      error?.response?.data || error.message
+    )
     return []
   }
 }
-export const PlantSeed = async (SeedId, slotIndex) => {
-  try{
-const body = { seedId }
-if (typeof slotIndex === 'number') body.slotIndex = slotIndex
-const res= await Client.post('/gardens/plant', body)
-return res.data
-  } catch(error){
-console.error('Error planting seed:', error)
-alert('Failed to plant seed.')
+
+export const PlantSeed = async (plantId, position) => {
+  try {
+    const res = await Client.post("/gardens/plant", { plantId, position })
+    return res.data
+  } catch (error) {
+    const status = error?.response?.status
+    const msg =
+      error?.response?.data?.error ||
+      error?.response?.data?.message ||
+      error.message
+    console.error("Error planting seed:", status, msg)
+    alert(`Failed to plant seed: ${msg}`)
+    return null
   }
 }
-export const HarvestPlant = async (Index) => {
-  try{
-const res = await Client.post('/gardens/harvest', {index})
-return res.data
-  } catch(error){
-console.error('Error harvesting plant:', error)
-alert('Failed to harvest plant.')
+
+
+export const RemovePlant = async (position) => {
+  try {
+    const res = await Client.delete("/gardens/remove", { data: { position } })
+    return res.data
+  } catch (error) {
+    console.error(
+      "Error removing plant:",
+      error?.response?.status,
+      error?.response?.data || error.message
+    )
+    alert("Failed to remove plant.")
+    return null
   }
 }
+
+
