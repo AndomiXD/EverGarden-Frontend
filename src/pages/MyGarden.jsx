@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react"
-import GardenGrid from "../components/GardenGrid"
 import SeedSidebar from "../components/SeedSidebar"
 import { GetGarden, GetSeeds, PlantSeed, RemovePlant } from "../services/GardenServices"
 import { CreateShare } from "../services/ShareServices"
@@ -10,9 +9,8 @@ const MyGarden = () => {
   const [garden, setGarden] = useState(null)
   const [seeds, setSeeds] = useState([])
   const [loading, setLoading] = useState(true)
-  const [selectedSlot, setSelectedSlot] = useState(null)
   const [selectedSeed, setSelectedSeed] = useState(null)
-  const [balance, setBalance] = useState(0) // 👈 track user balance
+  const [balance, setBalance] = useState(0)
   const [showForm, setShowForm] = useState(false)
   const [loadingShare, setLoadingShare] = useState(false)
 
@@ -23,7 +21,7 @@ const MyGarden = () => {
     const g = await GetGarden()
     if (g) {
       setGarden(g)
-      if (g.balance) setBalance(g.balance) // 👈 update balance if included in response
+      if (g.balance !== undefined) setBalance(g.balance)
     }
     const s = await GetSeeds()
     if (Array.isArray(s)) setSeeds(s)
@@ -34,44 +32,34 @@ const MyGarden = () => {
     loadData()
   }, [])
 
-  const handleSelectSlot = (index) => {
-    setSelectedSlot(Number(index))
-  }
+  // We’re working with ONE slot only (position 0)
+  const POSITION = 0
 
   const handlePlant = async () => {
-    if (!selectedSeed) return alert("Pick a seed first.")
-    if (selectedSlot == null) return alert("Select a soil tile first.")
-
+    if (!selectedSeed) {
+      alert("Please choose a seed first.")
+      return
+    }
     const plantId = selectedSeed._id
-    const position = Number(selectedSlot)
-
-    const res = await PlantSeed(plantId, position)
-    if (res && res.balance !== undefined) {
-      setBalance(res.balance) // 👈 update after planting
-    }
-
+    const res = await PlantSeed(plantId, POSITION)
+    if (!res) return
+    if (res.balance !== undefined) setBalance(res.balance)
     setSelectedSeed(null)
-    setSelectedSlot(null)
     await loadData()
   }
 
-  const handleHarvest = async (index) => {
-    const res = await RemovePlant(Number(index))
-    if (res && res.balance !== undefined) {
-      setBalance(res.balance)
-    }
+  const handleRemove = async () => {
+    const res = await RemovePlant(POSITION)
+    if (!res) return
+    if (res.balance !== undefined) setBalance(res.balance)
     await loadData()
-  }
-
-  const handleClear = () => {
-    setSelectedSeed(null)
-    setSelectedSlot(null)
   }
 
   const handleShareSubmit = async ({ title, description }) => {
     setLoadingShare(true)
     const result = await CreateShare(title, description)
     setLoadingShare(false)
+
     if (result) {
       alert("Your garden has been shared!")
       setShowForm(false)
@@ -81,39 +69,111 @@ const MyGarden = () => {
 
   if (loading) return <p>Loading garden...</p>
 
+  // Find the plant (if any) in position 0
+  const plantSlot = garden?.plants?.find((p) => p.position === POSITION) || null
+  const plantName = plantSlot?.plantRef?.name
+
   return (
     <div className="page">
-      <div className="header-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      {/* Header */}
+      <div
+        className="header-row"
+        style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
+      >
         <h2 className="page-title">My Garden</h2>
-        <div className="balance-box" style={{ background: "#e8f5e9", padding: "8px 14px", borderRadius: "10px" }}>
-          💰 <strong>Balance:</strong> {balance} coins
+        <div
+          className="balance-box"
+          style={{
+            background: "#e8f5e9",
+            padding: "8px 14px",
+            borderRadius: 10,
+            fontWeight: "bold",
+          }}
+        >
+          💰 Balance: {balance} coins
         </div>
       </div>
 
+      {/* Share button and form */}
       {!showForm && (
-        <button onClick={() => setShowForm(true)}>🌿 Share My Garden</button>
+        <button
+          onClick={() => setShowForm(true)}
+          style={{
+            background: "#81c784",
+            border: "none",
+            padding: "8px 12px",
+            borderRadius: 6,
+            cursor: "pointer",
+            color: "white",
+            fontWeight: "bold",
+            marginTop: "10px",
+          }}
+        >
+          🌿 Share My Garden
+        </button>
       )}
+
       {showForm && (
-        <ShareForm onSubmit={handleShareSubmit} onCancel={() => setShowForm(false)} />
+        <ShareForm
+          onSubmit={handleShareSubmit}
+          onCancel={() => setShowForm(false)}
+        />
       )}
       {loadingShare && <p>Sharing your garden...</p>}
 
-      <div className="garden-layout">
-        <main className="board-wrap">
-          <GardenGrid
-            garden={garden}
-            onHarvest={handleHarvest}
-            onSelectSlot={handleSelectSlot}
-          />
-        </main>
-        <aside className="sidebar">
+      {/* One soil square + sidebar */}
+      <div style={{ marginTop: 20, display: "flex", gap: 20 }}>
+        {/* Single slot UI */}
+        <div
+          className="single-slot"
+          style={{
+            width: 140,
+            height: 140,
+            borderRadius: 12,
+            background: "#6b4e33",
+            color: "white",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            boxShadow: "0 6px 20px rgba(0,0,0,0.1)",
+          }}
+        >
+          <small style={{ opacity: 0.7, marginBottom: 6 }}>#1</small>
+
+          {plantSlot ? (
+            <>
+              <strong style={{ fontSize: 18 }}>{plantName || "🌱 Seed"}</strong>
+              <button
+                onClick={handleRemove}
+                style={{
+                  marginTop: 8,
+                  background: "#fbe9e7",
+                  color: "#a33",
+                  border: "none",
+                  borderRadius: 6,
+                  padding: "6px 10px",
+                  cursor: "pointer",
+                  fontWeight: "bold",
+                }}
+              >
+                Remove
+              </button>
+            </>
+          ) : (
+            <span style={{ opacity: 0.9 }}>Empty</span>
+          )}
+        </div>
+
+        {/* Sidebar to choose & plant a seed */}
+        <aside className="sidebar" style={{ width: 320 }}>
           <SeedSidebar
             seeds={seeds}
             selectedSeed={selectedSeed}
             onSelectSeed={setSelectedSeed}
-            selectedSlot={selectedSlot}
+            selectedSlot={0}         
             onPlant={handlePlant}
-            onClear={handleClear}
+            onClear={() => setSelectedSeed(null)}
           />
         </aside>
       </div>
