@@ -40,12 +40,13 @@ export const PlantSeed = async (plantId, position) => {
     const res = await Client.post("/gardens/plant", { plantId, position })
     return res.data
   } catch (error) {
-    console.error(
-      "Error planting seed:",
-      error?.response?.status,
-      error?.response?.data || error.message
-    )
-    alert("Failed to plant seed.")
+    const status = error?.response?.status
+    const msg =
+      error?.response?.data?.error ||
+      error?.response?.data?.message ||
+      error.message
+    console.error("Error planting seed:", status, msg)
+    alert(`Failed to plant seed: ${msg}`)
     return null
   }
 }
