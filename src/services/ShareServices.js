@@ -1,22 +1,40 @@
-import Client from './api'
+import Client from "./api"
+
 
 export const CreateShare = async (title, description) => {
   try {
-    const res = await Client.post('/shares/create', { title, description })
-    return res.data
-  } catch (error) {
-    alert('Error while sharing your garden')
-    console.log(error)
+    const response = await Client.post("/shares/create", { title, description })
+    return response.data
+  } catch {
+    return null
   }
 }
 
+
 export const GetAllShares = async () => {
   try {
-    const res = await Client.get('/shares/all')
-    return res.data
-  } catch (error) {
-    alert('Error loading shared gardens')
-    console.log(error)
+    const response = await Client.get("/shares/all")
+    return response.data
+  } catch {
     return []
+  }
+}
+
+
+export const UpdateShare = async (shareId, data) => {
+  try {
+    const response = await Client.put(`/shares/${shareId}`, data)
+    return response.data 
+  } catch {
+    return null
+  }
+}
+
+export const DeleteShare = async (shareId) => {
+  try {
+    const response = await Client.delete(`/shares/${shareId}`)
+    return response.data
+  } catch {
+    return null
   }
 }

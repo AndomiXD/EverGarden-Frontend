@@ -9,7 +9,7 @@ const Home = () => {
       <div>
         <Link to="/signup">Create Account</Link>
         <Link to="/login">Sign In</Link>
-        <Link to="/garden">My Garden</Link>
+        <Link to="/gardens">My Garden</Link>
       </div>
     </section>
   )

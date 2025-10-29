@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { GetAllShares } from "../services/ShareServices"
 import { useNavigate } from "react-router-dom"
 
-const ShareFeed = ({ user }) => {
+const ShareFeed = () => {
   const [shares, setShares] = useState([])
   const navigate = useNavigate()
 
@@ -15,17 +15,13 @@ const ShareFeed = ({ user }) => {
   }, [])
 
   const handleView = (share) => {
-    const posterId = typeof share.poster === 'object' ? share.poster._id : share.poster
-    if (user?.id && posterId && user.id === posterId) {
-      navigate('/garden')
-    } else {
-      alert("This server only lets you view your own garden. (No /gardens/:id endpoint.)")
-    }
+    const gid = typeof share.garden === 'object' ? share.garden?._id : share.garden
+    if (gid) navigate(`/gardens/${gid}`)
   }
 
   return (
     <section>
-      <h2> Shared Gardens</h2>
+      <h2>Shared Gardens</h2>
       {shares.length === 0 ? (
         <p>No shared gardens yet.</p>
       ) : (
