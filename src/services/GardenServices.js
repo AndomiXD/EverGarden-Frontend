@@ -1,4 +1,12 @@
 import Client from "./api"
+export const CreateGarden = async (name, description) => {
+  try {
+    const res = await Client.post("/gardens/create", { name, description })
+    return res.data
+  } catch (error) {
+    console.error("Error creating garden:", error)
+  }
+}
 export const GetGarden = async () => {
   try {
     const res = await Client.get("/gardens/me")
@@ -66,6 +74,51 @@ export const GetAllShares = async () => {
     return res.data
   } catch (error) {
     console.error("Error fetching shares:", error)
+  }
+}
+
+export const GetUserShares = async () => {
+  try {
+    const res = await Client.get("/shares/user")
+    return res.data
+  } catch (error) {
+    console.error("Error fetching user shares:", error)
+  }
+}
+
+export const UpdateShare = async (id, title, description) => {
+  try {
+    const res = await Client.put(`/shares/${id}`, { title, description })
+    return res.data
+  } catch (error) {
+    console.error("Error updating share:", error)
+  }
+}
+
+export const DeleteShare = async (id) => {
+  try {
+    const res = await Client.delete(`/shares/${id}`)
+    return res.data
+  } catch (error) {
+    console.error("Error deleting share:", error)
+  }
+}
+
+export const GetGardenById = async (id) => {
+  try {
+    const res = await Client.get(`/gardens/${id}`)
+    return res.data
+  } catch (error) {
+    console.error("Error fetching garden by ID:", error)
+  }
+}
+
+export const GetPublicGarden = async (userId) => {
+  try {
+    const res = await Client.get(`/gardens/share/${userId}`)
+    return res.data
+  } catch (error) {
+    console.error("Error fetching public garden:", error)
   }
 }
 

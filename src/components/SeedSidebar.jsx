@@ -15,7 +15,11 @@ const SeedSidebar = ({ seeds }) => {
             onDragStart={(event) => handleDragStart(event, seed)}
             className="seed-card"
           >
-            <strong>{seed.name}</strong>
+            <div>
+              <img src={seed.image} alt="" style={{ width: "50px" }} />
+              <strong>{seed.name}</strong>
+            </div>
+
             <p>Cost: {seed.cost}</p>
             <p>Reward: {seed.reward}</p>
           </div>

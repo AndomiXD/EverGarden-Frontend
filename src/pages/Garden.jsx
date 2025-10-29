@@ -6,6 +6,7 @@ import {
   HarvestPlant,
   RemoveSeed,
   toggleAutoHarvest,
+  CreateGarden,
 } from "../services/GardenServices"
 import GardenGrid from "../components/GardenGrid"
 import SeedSidebar from "../components/SeedSidebar"
@@ -14,46 +15,68 @@ const GardenPage = () => {
   const [garden, setGarden] = useState(null)
   const [seeds, setSeeds] = useState([])
   const [balance, setBalance] = useState(0)
-  const [autoHarvest, setAutoHarvest] = useState(garden?.autoHarvest)
+  const [autoHarvest, setAutoHarvest] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchData = async () => {
-      const garden = await GetGarden()
-      const seed = await GetSeeds()
+      try {
+        let gardenData = await GetGarden()
+        if (!gardenData || gardenData.error || !gardenData.garden) {
+          const newGarden = await CreateGarden()
+          gardenData = newGarden
+        }
 
-      setGarden(garden?.garden || garden)
-      setBalance(garden?.balance || 0)
-      setSeeds(seed || [])
+        const seedData = await GetSeeds()
+
+        setGarden(gardenData?.garden || gardenData)
+        setBalance(gardenData?.balance || 0)
+        setSeeds(seedData || [])
+        setAutoHarvest(
+          gardenData?.garden?.autoHarvest || gardenData?.autoHarvest || false
+        )
+      } catch (error) {
+        console.error("Error loading garden page:", error)
+      } finally {
+        setLoading(false)
+      }
     }
+
     fetchData()
   }, [])
 
-  // Plant handler (drag-and-drop or sidebar)
   const handlePlant = async ({ plantId, position }) => {
     const data = await PlantSeed(plantId, position)
     if (data?.garden) setGarden(data.garden)
     if (data?.balance) setBalance(data.balance)
   }
 
-  // Harvest handler
   const handleHarvest = async (position) => {
     const data = await HarvestPlant(position)
     if (data?.garden) setGarden(data.garden)
     if (data?.balance) setBalance(data.balance)
   }
 
-  // Remove handler
   const handleRemove = async (position) => {
     const data = await RemoveSeed(position)
     if (data?.garden) setGarden(data.garden)
   }
 
+  const handleToggleAutoHarvest = async () => {
+    const data = await toggleAutoHarvest()
+    if (data?.autoHarvest !== undefined) {
+      setAutoHarvest(data.autoHarvest)
+      setGarden((prev) => ({ ...prev, autoHarvest: data.autoHarvest }))
+    }
+  }
+
   const onDropSeed = async (seed, position) => {
     if (!seed?._id) return
+
     await handlePlant({ plantId: seed._id, position })
   }
 
-  if (!garden) return <p className="loading-text"> Loading your garden...</p>
+  if (loading) return <p className="loading-text">Loading your garden...</p>
 
   return (
     <div className="garden-page">
@@ -61,21 +84,19 @@ const GardenPage = () => {
         <div className="balance-display">
           <strong>Balance:</strong> {balance} coins
         </div>
+
         <div className="auto-harvest-toggle">
           <label>
-            {/* {!garden.garden?.autoHarvest ? (
-              <button style={{ background: "green" }}>Auto Harvest</button>
-            ) : (
-              <button style={{ background: "red" }}>Auto Harvest</button>
-            )} */}
             Auto-Harvest:
             <input
               type="checkbox"
               checked={autoHarvest}
-              onChange={toggleAutoHarvest}
+              onChange={handleToggleAutoHarvest}
             />
+            (Only works when offline)
           </label>
         </div>
+
         <GardenGrid
           garden={garden}
           onHarvest={handleHarvest}

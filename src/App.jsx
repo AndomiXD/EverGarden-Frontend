@@ -6,6 +6,7 @@ import Home from "./pages/Home"
 import Login from "./pages/Login"
 import Signup from "./pages/Signup"
 import Garden from "./pages/Garden"
+import Profile from "./pages/Profile"
 import "./App.css"
 
 const App = () => {
@@ -22,14 +23,13 @@ const App = () => {
     const checkToken = async () => {
       const userData = await CheckSession()
       setUser(userData)
-      if (userData) navigate("/garden")
     }
 
     const token = localStorage.getItem("token")
     if (token) {
       checkToken()
     }
-  }, [navigate])
+  }, [])
 
   return (
     <>
@@ -40,6 +40,7 @@ const App = () => {
           <Route path="/login" element={<Login setUser={setUser} />} />
           <Route path="/signup" element={<Signup setUser={setUser} />} />
           <Route path="/garden" element={<Garden user={user} />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </main>
     </>
