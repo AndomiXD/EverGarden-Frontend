@@ -13,7 +13,7 @@ const GardenPosition = ({ position, plant, onHarvest, onRemove }) => {
         setTimeLeft(diff)
       }
 
-      updateTimeLeft() // initialize immediately upon logging in
+      updateTimeLeft() // initialise immediately upon logging in
       timerRef.current = setInterval(updateTimeLeft, 1000)
 
       return () => clearInterval(timerRef.current)
@@ -29,8 +29,8 @@ const GardenPosition = ({ position, plant, onHarvest, onRemove }) => {
   else slotClass += " slot-growing"
 
   const formatTime = (ms) => {
-    const s = Math.ceil(ms / 1000)
-    return `${s}s left`
+    const seconds = Math.ceil(ms / 1000)
+    return `${seconds}s left`
   }
 
   return (
@@ -44,9 +44,9 @@ const GardenPosition = ({ position, plant, onHarvest, onRemove }) => {
           <p className="slot-plant-name">{plant.plantRef?.name || "Unknown"}</p>
 
           {!ready ? (
-            <p className="slot-status">⏳ Growing ({formatTime(timeLeft)})</p>
+            <p className="slot-status"> Growing ({formatTime(timeLeft)})</p>
           ) : (
-            <p className="slot-status">🌾 Ready to harvest!</p>
+            <p className="slot-status"> Ready to harvest!</p>
           )}
 
           <div className="slot-buttons">
@@ -59,7 +59,7 @@ const GardenPosition = ({ position, plant, onHarvest, onRemove }) => {
               </button>
             )}
             <button onClick={() => onRemove(position)} className="remove-btn">
-              Remove ❌
+              Remove
             </button>
           </div>
         </div>

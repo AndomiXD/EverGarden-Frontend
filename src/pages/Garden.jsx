@@ -4,7 +4,7 @@ import {
   GetSeeds,
   PlantSeed,
   HarvestPlant,
-  RemoveSeed, // make sure this exists in GardenServices
+  RemoveSeed,
 } from "../services/GardenServices"
 import GardenGrid from "../components/GardenGrid"
 import SeedSidebar from "../components/SeedSidebar"
@@ -38,7 +38,7 @@ const GardenPage = () => {
     if (data?.garden) setGarden(data.garden)
   }
 
-  if (!garden) return <p className="loading-text">🌱 Loading your garden...</p>
+  if (!garden) return <p className="loading-text"> Loading your garden...</p>
 
   return (
     <div className="garden-page">
