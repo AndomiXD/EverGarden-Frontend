@@ -1,77 +1,182 @@
 import { useEffect, useState } from "react"
-import { CheckSession } from "../services/Auth"
-import { loadPreferences, savePreferences } from "../services/UserPrefs"
-
+import { GetMyProfile, UpdateMyProfile, UpdateMyPassword } from "../services/UserServices"
+import { savePreferences } from "../services/UserPrefs"   
 const Profile = () => {
-  const [signedInUser, setSignedInUser] = useState(null)
-  const [displayName, setDisplayName] = useState("")
+  const [loadingProfile, setLoadingProfile] = useState(true)
+
+  const [profileMessage, setProfileMessage] = useState("")
+  const [profileError, setProfileError] = useState("")
+  const [username, setUsername] = useState("")
+  const [email, setEmail] = useState("")
   const [avatarUrl, setAvatarUrl] = useState("")
-  const [message, setMessage] = useState("")
+
+  const [passwordMessage, setPasswordMessage] = useState("")
+  const [passwordError, setPasswordError] = useState("")
+  const [currentPassword, setCurrentPassword] = useState("")
+  const [newPassword, setNewPassword] = useState("")
+  const [savingPassword, setSavingPassword] = useState(false)
 
   useEffect(() => {
-    const initialize = async () => {
-      const userFromServer = await CheckSession()
-      setSignedInUser(userFromServer || null)
-
-      const prefs = loadPreferences()
-      // Use local override if it exists, otherwise fall back to server user name
-      setDisplayName(prefs.displayName || userFromServer?.username || "")
-      setAvatarUrl(prefs.avatarUrl || "")
+    const load = async () => {
+      setLoadingProfile(true)
+      const me = await GetMyProfile()
+      if (me) {
+        setUsername(me.username || "")
+        setEmail(me.email || "")
+        setAvatarUrl(me.avatarUrl || "")
+      } else {
+        setProfileError("Could not load your profile.")
+      }
+      setLoadingProfile(false)
     }
-    initialize()
+    load()
   }, [])
 
-  const handleSave = (event) => {
+  const clearProfileMessages = () => {
+    setProfileMessage("")
+    setProfileError("")
+  }
+
+  const clearPasswordMessages = () => {
+    setPasswordMessage("")
+    setPasswordError("")
+  }
+
+  const handleSaveProfile = async (event) => {
     event.preventDefault()
-    savePreferences({ displayName, avatarUrl })
-    setMessage("Profile saved locally. (Frontend only)")
-    setTimeout(() => setMessage(""), 3000)
+    clearProfileMessages()
+
+    const updated = await UpdateMyProfile({ username, avatarUrl })
+    if (updated) {
+      setProfileMessage("Profile saved.")
+
+      savePreferences({ displayName: username, avatarUrl })
+    } else {
+      setProfileError("Could not save your profile.")
+    }
+  }
+
+  const handleChangePassword = async (event) => {
+    event.preventDefault()
+    clearPasswordMessages()
+
+    if (!currentPassword || !newPassword) {
+      setPasswordError("Please fill both fields.")
+      return
+    }
+
+    setSavingPassword(true)
+    const result = await UpdateMyPassword(currentPassword, newPassword)
+    setSavingPassword(false)
+
+    if (result) {
+      setPasswordMessage("Password updated successfully.")
+      setCurrentPassword("")
+      setNewPassword("")
+    } else {
+      setPasswordError("Could not update your password. Please check your current password.")
+    }
+  }
+
+  if (loadingProfile) {
+    return <p className="profile-loading-text">Loading profile...</p>
   }
 
   return (
     <section className="profile-page">
       <h2 className="profile-title">My Profile</h2>
 
-      {message && <div className="notice notice-success">{message}</div>}
+      {profileMessage && <div className="notice notice-success">{profileMessage}</div>}
+      {profileError && <div className="notice notice-error">{profileError}</div>}
 
-      <div className="profile-layout">
-        <div className="profile-avatar">
-          {/* If you have an avatar URL, show it with CSS background-image or <img> via CSS */}
-          {avatarUrl ? (
-            <img className="avatar-image" src={avatarUrl} alt="Avatar" />
-          ) : (
-            <div className="avatar-placeholder">No photo</div>
-          )}
-          <p className="avatar-help">
-            Paste any public image link below (for example from ImgBB or Cloudinary).
-          </p>
+      <div className="profile-sections">
+        <div className="profile-section profile-info-section">
+          <h3 className="section-title">Profile Information</h3>
+
+          <div className="avatar-block">
+            <div className="avatar-frame">
+              {avatarUrl ? (
+                <img
+                  className="avatar-image"
+                  src={avatarUrl}
+                  alt="Avatar"
+                  onError={(e) => {
+                    e.currentTarget.src = ""
+                    setProfileError("Could not load avatar from the provided link.")
+                  }}
+                />
+              ) : (
+                <div className="avatar-placeholder">No photo</div>
+              )}
+            </div>
+          </div>
+
+          <form className="profile-form" onSubmit={handleSaveProfile}>
+            <label className="form-label">
+              Display Name
+              <input
+                className="form-input"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter your display name"
+              />
+            </label>
+
+            <label className="form-label">
+              Avatar Image Link (URL)
+              <input
+                className="form-input"
+                value={avatarUrl}
+                onChange={(e) => setAvatarUrl(e.target.value)}
+                placeholder="Paste a public image URL (PNG/JPG/WEBP)"
+              />
+            </label>
+
+            <label className="form-label">
+              Email (read only)
+              <input className="form-input" value={email} readOnly disabled />
+            </label>
+
+            <button className="btn btn-primary" type="submit">
+              Save Profile
+            </button>
+          </form>
         </div>
 
-        <form className="profile-form" onSubmit={handleSave}>
-          <label className="form-label">
-            Display Name (local override)
-            <input
-              className="form-input"
-              value={displayName}
-              onChange={(e) => setDisplayName(e.target.value)}
-              placeholder={signedInUser?.username || "Your name"}
-            />
-          </label>
+        <div className="profile-section password-section">
+          <h3 className="section-title">Change Password</h3>
 
-          <label className="form-label">
-            Avatar Image URL
-            <input
-              className="form-input"
-              value={avatarUrl}
-              onChange={(e) => setAvatarUrl(e.target.value)}
-              placeholder="https://example.com/your-photo.png"
-            />
-          </label>
+          {passwordMessage && <div className="notice notice-success">{passwordMessage}</div>}
+          {passwordError && <div className="notice notice-error">{passwordError}</div>}
 
-          <button className="btn btn-primary" type="submit">
-            Save (Local)
-          </button>
-        </form>
+          <form className="password-form" onSubmit={handleChangePassword}>
+            <label className="form-label">
+              Current Password
+              <input
+                className="form-input"
+                type="password"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                placeholder="Enter your current password"
+              />
+            </label>
+
+            <label className="form-label">
+              New Password
+              <input
+                className="form-input"
+                type="password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                placeholder="Enter your new password"
+              />
+            </label>
+
+            <button className="btn btn-primary" type="submit" disabled={savingPassword}>
+              {savingPassword ? "Saving..." : "Update Password"}
+            </button>
+          </form>
+        </div>
       </div>
     </section>
   )

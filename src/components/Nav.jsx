@@ -10,7 +10,7 @@ const Nav = ({ user, handleLogOut }) => {
   }, [user])
 
   const nameToShow = preferences.displayName || user?.username || "Guest"
-  const avatarToShow = preferences.avatarUrl || ""
+  const avatarToShow = preferences.avatarUrl || user?.avatarUrl || "" 
 
   let privateLinks
   if (user) {
