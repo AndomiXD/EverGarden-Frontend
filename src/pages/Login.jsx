@@ -14,7 +14,7 @@ const Login = ({ setUser}) => {
     const user = await SignInUser(form)
     if (user) {
       setUser(user)
-      navigate("/garden")
+      navigate("/gardens")
     }
   }
   return (

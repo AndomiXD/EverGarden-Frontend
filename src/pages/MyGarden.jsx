@@ -13,18 +13,18 @@ const MyGarden = () => {
   const [balance, setBalance] = useState(0)
   const [showForm, setShowForm] = useState(false)
   const [loadingShare, setLoadingShare] = useState(false)
-
+  const [message, setMessage] = useState("")
   const navigate = useNavigate()
 
   const loadData = async () => {
     setLoading(true)
-    const g = await GetGarden()
-    if (g) {
-      setGarden(g)
-      if (g.balance !== undefined) setBalance(g.balance)
+    const garden = await GetGarden()
+    if (garden) {
+      setGarden(garden)
+      if (garden.balance !== undefined) setBalance(garden.balance)
     }
-    const s = await GetSeeds()
-    if (Array.isArray(s)) setSeeds(s)
+    const slot = await GetSeeds()
+    if (Array.isArray(slot)) setSeeds(slot)
     setLoading(false)
   }
 
@@ -32,7 +32,7 @@ const MyGarden = () => {
     loadData()
   }, [])
 
-  // We’re working with ONE slot only (position 0)
+
   const POSITION = 0
 
   const handlePlant = async () => {
@@ -61,7 +61,7 @@ const MyGarden = () => {
     setLoadingShare(false)
 
     if (result) {
-      alert("Your garden has been shared!")
+      setMessage("Your garden has been shared!")
       setShowForm(false)
       navigate("/feed")
     }
@@ -69,13 +69,11 @@ const MyGarden = () => {
 
   if (loading) return <p>Loading garden...</p>
 
-  // Find the plant (if any) in position 0
   const plantSlot = garden?.plants?.find((p) => p.position === POSITION) || null
   const plantName = plantSlot?.plantRef?.name
 
-  return (
+  return(
     <div className="page">
-      {/* Header */}
       <div
         className="header-row"
         style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
@@ -94,7 +92,7 @@ const MyGarden = () => {
         </div>
       </div>
 
-      {/* Share button and form */}
+
       {!showForm && (
         <button
           onClick={() => setShowForm(true)}
@@ -121,9 +119,9 @@ const MyGarden = () => {
       )}
       {loadingShare && <p>Sharing your garden...</p>}
 
-      {/* One soil square + sidebar */}
+
       <div style={{ marginTop: 20, display: "flex", gap: 20 }}>
-        {/* Single slot UI */}
+
         <div
           className="single-slot"
           style={{
@@ -165,13 +163,12 @@ const MyGarden = () => {
           )}
         </div>
 
-        {/* Sidebar to choose & plant a seed */}
         <aside className="sidebar" style={{ width: 320 }}>
           <SeedSidebar
             seeds={seeds}
             selectedSeed={selectedSeed}
             onSelectSeed={setSelectedSeed}
-            selectedSlot={0}         
+            selectedSlot={0}
             onPlant={handlePlant}
             onClear={() => setSelectedSeed(null)}
           />

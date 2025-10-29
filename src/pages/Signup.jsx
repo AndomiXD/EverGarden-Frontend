@@ -17,7 +17,7 @@ const Signup = ({ setUser }) => {
     const user = await SignInUser({ email: form.email, password: form.password })
     if(user){
       setUser(user)
-      navigate("/garden")
+      navigate("/gardens")
     }
   }
 

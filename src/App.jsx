@@ -8,6 +8,8 @@ import Signup from "./pages/Signup"
 import MyGarden from "./pages/MyGarden"
 import ShareFeed from "./pages/ShareFeed"
 import ViewGarden from "./pages/ViewGarden"
+import Profile from "./pages/Profile"
+import MyShares from "./pages/MyShares"
 import "./App.css"
 
 const App = () => {
@@ -40,6 +42,8 @@ const App = () => {
           <Route path="/gardens" element={<MyGarden user={user} />} />
           <Route path="/feed" element={<ShareFeed />} />
           <Route path="/gardens/:id" element={<ViewGarden />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/my-shares" element={<MyShares />} />
         </Routes>
       </main>
     </>
