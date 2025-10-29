@@ -40,3 +40,219 @@
 .read-the-docs {
   color: #888;
 }
+
+/* === Garden Page === */
+.garden-page {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1.5rem;
+  padding: 2rem;
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #e8f5e9, #f1f8e9);
+}
+
+.loading-text {
+  text-align: center;
+  margin-top: 2rem;
+  color: #555;
+}
+
+/* === Garden Grid === */
+.garden-grid-container {
+  flex: 1;
+  max-width: 800px;
+}
+
+.seed-sidebar-container {
+  width: 300px;
+}
+
+.garden-grid {
+  background-color: #f1f8f6;
+  border: 2px solid #81c784;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.garden-title {
+  color: #2e7d32;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.garden-grid-layout {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.grid-note {
+  font-size: 0.8rem;
+  color: #777;
+  font-style: italic;
+  margin-top: 0.5rem;
+}
+
+/* === Garden Position === */
+.garden-slot {
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.slot-empty {
+  border: 2px dashed #a5d6a7;
+  background: #f9fff9;
+}
+
+.slot-growing {
+  border: 2px solid #81c784;
+  background: #ffffff;
+}
+
+.slot-ready {
+  border: 2px solid #f9a825;
+  background: #fff8e1;
+}
+
+.garden-slot:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.slot-title {
+  font-weight: 600;
+  color: #2e7d32;
+  margin-bottom: 0.5rem;
+}
+
+.slot-empty-text {
+  color: #9e9e9e;
+  font-style: italic;
+}
+
+.slot-plant-name {
+  font-weight: 600;
+  color: #1b5e20;
+}
+
+.slot-status {
+  color: #555;
+  font-size: 0.85rem;
+  margin-top: 0.3rem;
+}
+
+.harvest-btn {
+  background-color: #388e3c;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.harvest-btn:hover {
+  background-color: #2e7d32;
+}
+
+/* === Seed Sidebar === */
+.seed-sidebar {
+  background: #fff;
+  border: 2px solid #a5d6a7;
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.seed-title {
+  font-size: 1.2rem;
+  color: #2e7d32;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.seed-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.seed-card {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 0.6rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  background-color: #fdfdfd;
+}
+
+.seed-card:hover {
+  background-color: #f9fff9;
+  border-color: #81c784;
+}
+
+.seed-card.selected {
+  border: 2px solid #388e3c;
+  background-color: #e8f5e9;
+}
+
+.no-seeds {
+  color: #999;
+  font-style: italic;
+}
+
+.position-input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #a5d6a7;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  outline: none;
+}
+
+.position-input:focus {
+  border-color: #66bb6a;
+  box-shadow: 0 0 4px #a5d6a7;
+}
+
+.plant-btn {
+  width: 100%;
+  background-color: #43a047;
+  color: #fff;
+  border: none;
+  padding: 0.6rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.plant-btn:hover {
+  background-color: #2e7d32;
+}
+
+.remove-btn {
+  background-color: #d32f2f;
+  color: #fff;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.remove-btn:hover {
+  background-color: #b71c1c;
+}

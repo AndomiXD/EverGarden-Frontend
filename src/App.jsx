@@ -1,32 +1,35 @@
-import { useState, useEffect } from 'react'
-import { Route, Routes } from 'react-router-dom'
-import { CheckSession } from './services/Auth'
-import Nav from './components/Nav'
-import Home from './pages/Home'
-import Login from './pages/Login'
-import Signup from './pages/Signup'
-import MyGarden from './pages/MyGarden'
-
-import './App.css'
+import { useState, useEffect } from "react"
+import { Route, Routes, useNavigate } from "react-router-dom"
+import { CheckSession } from "./services/Auth"
+import Nav from "./components/Nav"
+import Home from "./pages/Home"
+import Login from "./pages/Login"
+import Signup from "./pages/Signup"
+import Garden from "./pages/Garden"
+import "./App.css"
 
 const App = () => {
   const [user, setUser] = useState(null)
+  const navigate = useNavigate()
 
   const handleLogOut = () => {
     setUser(null)
     localStorage.clear()
+    navigate("/") // go back to home when logged out
   }
 
-  useEffect(()=> {
+  useEffect(() => {
     const checkToken = async () => {
       const userData = await CheckSession()
       setUser(userData)
+      if (userData) navigate("/garden")
     }
-    const token = localStorage.getItem('token')
-    if(token){
+
+    const token = localStorage.getItem("token")
+    if (token) {
       checkToken()
     }
-  }, [])
+  }, [navigate])
 
   return (
     <>
@@ -34,9 +37,9 @@ const App = () => {
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login setUser={setUser}/>} />
+          <Route path="/login" element={<Login setUser={setUser} />} />
           <Route path="/signup" element={<Signup setUser={setUser} />} />
-          <Route path="/garden" element={<MyGarden user={user}/>} />
+          <Route path="/garden" element={<Garden user={user} />} />
         </Routes>
       </main>
     </>

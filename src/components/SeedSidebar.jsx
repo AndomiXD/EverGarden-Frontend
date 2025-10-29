@@ -2,35 +2,48 @@ import { useState } from "react"
 
 const SeedSidebar = ({ seeds, onPlant }) => {
   const [selected, setSelected] = useState(null)
-  const [slotIndex, setSlotIndex] = useState("")
+  const [position, setPosition] = useState("")
 
   const handlePlant = () => {
-    if (!selected) {
-      alert("Pick a seed first!")
-      return
-    }
-    const index = slotIndex === "" ? undefined : Number(slotIndex)
-    onPlant({ seedId: selected._id, slotIndex: index })
-    setSlotIndex("")
+    if (!selected) return alert("Pick a seed first!")
+    const pos = position === "" ? 0 : Number(position)
+    onPlant({ plantId: selected._id, position: pos })
+    setPosition("")
   }
 
   return (
-    <aside>
-      <h3>Seeds</h3>
-      {seeds.map((s) => (
-        <div key={s._id} onClick={() => setSelected(s)}>
-          <strong>{s.name}</strong>
-          <p>Cost: {s.cost}</p>
-          <p>Reward: {s.reward}</p>
-        </div>
-      ))}
+    <aside className="seed-sidebar">
+      <h3 className="seed-title">Seeds</h3>
+      <div className="seed-list">
+        {seeds.length ? (
+          seeds.map((seed) => (
+            <div
+              key={seed._id}
+              onClick={() => setSelected(seed)}
+              className={`seed-card ${
+                selected?._id === seed._id ? "selected" : ""
+              }`}
+            >
+              <strong>{seed.name}</strong>
+              <p>Cost: {seed.cost}</p>
+              <p>Reward: {seed.reward}</p>
+            </div>
+          ))
+        ) : (
+          <p className="no-seeds">No seeds available</p>
+        )}
+      </div>
 
       <input
-        placeholder="slot index (optional)"
-        value={slotIndex}
-        onChange={(e) => setSlotIndex(e.target.value)}
+        type="number"
+        placeholder="Position (e.g. 0)"
+        value={position}
+        onChange={(e) => setPosition(e.target.value)}
+        className="position-input"
       />
-      <button onClick={handlePlant}>Plant</button>
+      <button onClick={handlePlant} className="plant-btn">
+        Plant 🌱
+      </button>
     </aside>
   )
 }

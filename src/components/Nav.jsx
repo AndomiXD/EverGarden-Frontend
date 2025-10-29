@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-const Nav = ({ user, handleLogOut}) => {
+const Nav = ({ user, handleLogOut }) => {
   let userOptions
 
   if(user){
@@ -24,7 +24,7 @@ const Nav = ({ user, handleLogOut}) => {
   return (
     <header>
       <nav>
-        {user? userOptions : publicOptions }
+        {user ? userOptions : publicOptions }
       </nav>
     </header>
   )
