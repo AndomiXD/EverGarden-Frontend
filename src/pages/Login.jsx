@@ -6,11 +6,11 @@ const Login = ({ setUser}) => {
   const [form, setForm] = useState({ email:"", password:""})
   const navigate = useNavigate()
 
-  const handleChange = (e) => {
-    setForm({...form, [e.target.name]: e.target.value})
+  const handleChange = (event) => {
+    setForm({...form, [event.target.name]: event.target.value})
   }
-  const handleSubmit = async (e) => {
-    e.preventDefault()
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     const user = await SignInUser(form)
     if (user) {
       setUser(user)

@@ -5,12 +5,12 @@ import { RegisterUser, SignInUser} from "../services/Auth"
 const Signup = ({ setUser }) => {
   const [form, setForm] = useState({ username:"", email:"", password:""})
   const navigate = useNavigate()
-  const handleChange = (e) => {
-    setForm({...form, [e.target.name]: e.target.value})
+  const handleChange = (event) => {
+    setForm({...form, [event.target.name]: event.target.value})
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     const ok = await RegisterUser(form)
     if(!ok)return
     const user = await SignInUser({ email: form.email, password: form.password })

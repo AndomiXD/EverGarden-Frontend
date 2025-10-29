@@ -1,9 +1,16 @@
 import { useEffect, useState, useRef } from "react"
 
-const GardenPosition = ({ position, plant, onHarvest, onRemove }) => {
+const GardenPosition = ({
+  position,
+  plant,
+  onHarvest,
+  onRemove,
+  onDropSeed,
+}) => {
   const [timeLeft, setTimeLeft] = useState(null)
   const timerRef = useRef(null)
 
+  // Timer logic
   useEffect(() => {
     if (plant && plant.expectHarvest) {
       const updateTimeLeft = () => {
@@ -13,7 +20,7 @@ const GardenPosition = ({ position, plant, onHarvest, onRemove }) => {
         setTimeLeft(diff)
       }
 
-      updateTimeLeft() // initialise immediately upon logging in
+      updateTimeLeft() // initialise immediately
       timerRef.current = setInterval(updateTimeLeft, 1000)
 
       return () => clearInterval(timerRef.current)
@@ -33,20 +40,30 @@ const GardenPosition = ({ position, plant, onHarvest, onRemove }) => {
     return `${seconds}s left`
   }
 
+  //https://stackoverflow.com/questions/48796926/datatransfer-getdata-and-setdata-in-ie-edge
+  // Drag-and-drop handlers
+  const handleDrop = (event) => {
+    event.preventDefault()
+    const seedData = JSON.parse(event.dataTransfer.getData("seed"))
+    onDropSeed(seedData, position)
+  }
+
+  const handleDragOver = (event) => event.preventDefault()
+
   return (
-    <div className={slotClass}>
-      <h4 className="slot-title">Plot {position}</h4>
+    <div className={slotClass} onDrop={handleDrop} onDragOver={handleDragOver}>
+      <h4 className="slot-title">Slot {position}</h4>
 
       {isEmpty ? (
         <p className="slot-empty-text">Empty</p>
       ) : (
         <div>
-          <p className="slot-plant-name">{plant.plantRef?.name || "Unknown"}</p>
+          <p className="slot-plant-name">{plant.plantRef?.name}</p>
 
           {!ready ? (
-            <p className="slot-status"> Growing ({formatTime(timeLeft)})</p>
+            <p className="slot-status">Growing ({formatTime(timeLeft)})</p>
           ) : (
-            <p className="slot-status"> Ready to harvest!</p>
+            <p className="slot-status">Ready to harvest!</p>
           )}
 
           <div className="slot-buttons">
@@ -58,12 +75,17 @@ const GardenPosition = ({ position, plant, onHarvest, onRemove }) => {
                 Harvest
               </button>
             )}
-            <button onClick={() => onRemove(position)} className="remove-btn">
-              Remove
-            </button>
+
+            {!ready && (
+              <button onClick={() => onRemove(position)} className="remove-btn">
+                Remove
+              </button>
+            )}
           </div>
         </div>
       )}
+
+      {isEmpty && <p className="slot-drop-hint">Drag a seed here to plant</p>}
     </div>
   )
 }

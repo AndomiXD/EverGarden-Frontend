@@ -68,3 +68,12 @@ export const GetAllShares = async () => {
     console.error("Error fetching shares:", error)
   }
 }
+
+export const toggleAutoHarvest = async () => {
+  try {
+    const res = await Client.put("/gardens/toggle-autoHarvest")
+    return res.data
+  } catch (err) {
+    console.error("Error toggling autoHarvest", err)
+  }
+}
