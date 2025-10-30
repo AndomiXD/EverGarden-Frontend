@@ -101,20 +101,23 @@ const GardenPage = () => {
   return (
     <div className="garden-page">
       <div className="garden-grid-container">
-        <div className="balance-display">
-          <strong>Balance:</strong> {balance} coins
-        </div>
+        <div className="garden-header">
+          <div className="balance-display">
+            <span>Balance:</span>
+            <span>{balance} coins</span>
+          </div>
 
-        <div className="auto-harvest-toggle">
-          <label>
-            Auto-Harvest:
-            <input
-              type="checkbox"
-              checked={autoHarvest}
-              onChange={handleToggleAutoHarvest}
-            />
-            (Works both online & offline)
-          </label>
+          <div className="auto-harvest-toggle">
+            <label>
+              Auto-Harvest
+              <input
+                type="checkbox"
+                checked={autoHarvest}
+                onChange={handleToggleAutoHarvest}
+              />
+            </label>
+            <small>(Works both online & offline)</small>
+          </div>
         </div>
 
         <GardenGrid

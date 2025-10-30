@@ -6,24 +6,36 @@ const SeedSidebar = ({ seeds }) => {
 
   return (
     <aside className="seed-sidebar">
-      <h3 className="seed-title">Seeds</h3>
-      <div className="seed-list">
-        {seeds.map((seed) => (
-          <div
-            key={seed._id}
-            draggable
-            onDragStart={(event) => handleDragStart(event, seed)}
-            className="seed-card"
-          >
-            <div>
-              <img src={seed.image} alt="" style={{ width: "50px" }} />
-              <strong>{seed.name}</strong>
-            </div>
+      <h3 className="seed-title">🌱 Available Seeds</h3>
 
-            <p>Cost: {seed.cost}</p>
-            <p>Reward: {seed.reward}</p>
-          </div>
-        ))}
+      <div className="seed-list">
+        {seeds.length === 0 ? (
+          <p className="no-seeds">No seeds available</p>
+        ) : (
+          seeds.map((seed) => (
+            <div
+              key={seed._id}
+              draggable
+              onDragStart={(event) => handleDragStart(event, seed)}
+              className="seed-card"
+              title="Drag this seed into your garden!"
+            >
+              <img
+                src={seed.image}
+                alt={seed.name}
+                className="seed-image"
+                draggable="false"
+              />
+
+              <div className="seed-info">
+                <strong className="seed-name">{seed.name}</strong>
+                <p className="seed-stats">
+                  Cost: {seed.cost} Reward: {seed.reward}
+                </p>
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </aside>
   )

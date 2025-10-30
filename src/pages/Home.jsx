@@ -8,10 +8,10 @@ const Home = () => {
 
       <div className="home-buttons">
         <Link to="/signup" className="btn btn-primary">
-          Create Account
+          Sign Up
         </Link>
         <Link to="/login" className="btn btn-secondary">
-          Sign In
+          Log in
         </Link>
       </div>
     </section>
