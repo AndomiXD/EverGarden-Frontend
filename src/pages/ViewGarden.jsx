@@ -42,15 +42,16 @@ const ViewGarden = () => {
 
   return (
     <div className="view-garden-page">
-      <h2 className="page-title">{garden.name || "Garden"}</h2>
+      <h2 className="page-title">{garden.name}</h2>
 
-      <div className="garden-grid">
+      <div className="garden-grid-viewGarden">
         {slots.map((slot, i) => (
           <div
             key={i}
             className={`garden-slot ${
               slot.status === "empty" ? "slot-empty" : "slot-planted"
             }`}
+            style={{ width: "180px" }}
           >
             {slot.status === "planted" ? (
               <>
@@ -72,10 +73,6 @@ const ViewGarden = () => {
           </div>
         ))}
       </div>
-
-      {garden.description && (
-        <p className="garden-description">{garden.description}</p>
-      )}
     </div>
   )
 }

@@ -46,8 +46,6 @@ const GardenCard = ({ position, plant, onHarvest, onRemove, onDropSeed }) => {
 
   return (
     <div className={slotClass} onDrop={handleDrop} onDragOver={handleDragOver}>
-      <h4 className="slot-title">Slot {position}</h4>
-
       {isEmpty ? (
         <p className="slot-empty-text">Empty</p>
       ) : (

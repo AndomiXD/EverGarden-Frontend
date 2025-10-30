@@ -99,7 +99,7 @@ const GardenPage = () => {
   if (loading) return <p className="loading-text">Loading your garden...</p>
 
   return (
-    <div className="garden-page">
+    <div className="garden-page" style={{ overflowY: "hidden" }}>
       <div className="garden-grid-container">
         <div className="garden-header">
           <div className="balance-display">

@@ -1,8 +1,17 @@
 import { Link } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { loadPreferences } from "../services/UserPrefs"
 
 const Nav = ({ user, handleLogOut }) => {
-  const username = user?.username
-  const image = user?.image
+  const [profile, setProfile] = useState({})
+
+  useEffect(() => {
+    const prefs = loadPreferences()
+    setProfile(prefs)
+  }, [user])
+
+  const username = profile.username || user?.username
+  const image = profile.image || user?.image
 
   let userOptions
 
@@ -13,14 +22,16 @@ const Nav = ({ user, handleLogOut }) => {
           <img src={image} alt="User image" className="nav-avatar" />
           <span className="nav-welcome">Welcome, {username}!</span>
         </div>
+
         <div className="nav-links">
           <Link to="/garden">My Garden</Link>
-          <Link to="/profile">Profile</Link>
+
           <Link to="/feed">Feed</Link>
           <Link to="/my-shares">My Shares</Link>
         </div>
 
         <div className="nav-logout">
+          <Link to="/profile">Profile</Link>
           <Link onClick={handleLogOut} to="/">
             Sign Out
           </Link>
