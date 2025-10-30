@@ -1,0 +1,199 @@
+import { useEffect, useState } from "react"
+import {
+  GetMyProfile,
+  UpdateMyProfile,
+  UpdateMyPassword,
+} from "../services/UserServices"
+import { savePreferences } from "../services/UserPrefs"
+
+const Profile = () => {
+  const [loadingProfile, setLoadingProfile] = useState(true)
+  const [profileMessage, setProfileMessage] = useState("")
+  const [profileError, setProfileError] = useState("")
+  const [username, setUsername] = useState("")
+  const [email, setEmail] = useState("")
+  const [image, setImage] = useState("")
+  const [passwordMessage, setPasswordMessage] = useState("")
+  const [passwordError, setPasswordError] = useState("")
+  const [currentPassword, setCurrentPassword] = useState("")
+  const [newPassword, setNewPassword] = useState("")
+  const [savingPassword, setSavingPassword] = useState(false)
+
+  useEffect(() => {
+    const load = async () => {
+      setLoadingProfile(true)
+      try {
+        const me = await GetMyProfile()
+        if (me) {
+          setUsername(me.username || "")
+          setEmail(me.email || "")
+          setImage(me.image || "")
+        } else {
+          setProfileError("Could not load your profile.")
+        }
+      } catch {
+        setProfileError("Failed to fetch profile.")
+      }
+      setLoadingProfile(false)
+    }
+    load()
+  }, [])
+
+  const clearProfileMessages = () => {
+    setProfileMessage("")
+    setProfileError("")
+  }
+
+  const clearPasswordMessages = () => {
+    setPasswordMessage("")
+    setPasswordError("")
+  }
+
+  const handleSaveProfile = async (event) => {
+    event.preventDefault()
+    clearProfileMessages()
+    try {
+      const updated = await UpdateMyProfile({ username, image })
+      if (updated) {
+        setProfileMessage("Profile saved.")
+        savePreferences({ displayName: username, image })
+      } else {
+        setProfileError("Could not save your profile.")
+      }
+    } catch {
+      setProfileError("Failed to update profile.")
+    }
+  }
+
+  const handleChangePassword = async (event) => {
+    event.preventDefault()
+    clearPasswordMessages()
+    if (!currentPassword || !newPassword) {
+      setPasswordError("Please fill both fields.")
+      return
+    }
+    setSavingPassword(true)
+    try {
+      const result = await UpdateMyPassword(currentPassword, newPassword)
+      if (result) {
+        setPasswordMessage("Password updated successfully.")
+        setCurrentPassword("")
+        setNewPassword("")
+      } else {
+        setPasswordError(
+          "Could not update your password. Please check your current password."
+        )
+      }
+    } catch {
+      setPasswordError("Failed to update password.")
+    }
+    setSavingPassword(false)
+  }
+
+  if (loadingProfile)
+    return <p className="profile-loading-text">Loading profile...</p>
+
+  return (
+    <section className="profile-page">
+      <h2 className="profile-title">My Profile</h2>
+      {profileMessage && (
+        <div className="notice notice-success">{profileMessage}</div>
+      )}
+      {profileError && (
+        <div className="notice notice-error">{profileError}</div>
+      )}
+
+      <div className="profile-sections">
+        <div className="profile-section profile-info-section">
+          <div className="avatar-block">
+            <div className="avatar-frame">
+              {image ? (
+                <img
+                  className="avatar-image"
+                  src={image}
+                  alt="Avatar"
+                  onError={(e) => {
+                    e.currentTarget.src = ""
+                    setProfileError(
+                      "Could not load avatar from the provided link."
+                    )
+                  }}
+                />
+              ) : (
+                <div className="avatar-placeholder">No photo</div>
+              )}
+            </div>
+          </div>
+          <form className="profile-form" onSubmit={handleSaveProfile}>
+            <label className="form-label">
+              Username
+              <input
+                className="form-input"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter your display name"
+              />
+            </label>
+            <label className="form-label">
+              Avatar Image Link (URL)
+              <input
+                className="form-input"
+                value={image}
+                onChange={(e) => setImage(e.target.value)}
+                placeholder="Paste a public image URL (PNG/JPG/WEBP)"
+              />
+            </label>
+            <label className="form-label">
+              Email (read only)
+              <input className="form-input" value={email} readOnly disabled />
+            </label>
+            <button className="btn btn-primary" type="submit">
+              Save Profile
+            </button>
+          </form>
+        </div>
+
+        <div className="profile-section password-section">
+          <br />
+          {passwordMessage && (
+            <div className="notice notice-success">{passwordMessage}</div>
+          )}
+          {passwordError && (
+            <div className="notice notice-error">{passwordError}</div>
+          )}
+          <form className="password-form" onSubmit={handleChangePassword}>
+            <label className="form-label">
+              Current Password
+              <input
+                className="form-input"
+                type="password"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                placeholder="Enter your current password"
+              />
+            </label>
+            <label className="form-label">
+              New Password
+              <input
+                className="form-input"
+                type="password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                placeholder="Enter your new password"
+              />
+            </label>
+            <button
+              className="btn btn-primary"
+              type="submit"
+              disabled={savingPassword}
+            >
+              {savingPassword ? "Saving..." : "Update Password"}
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export default Profile
