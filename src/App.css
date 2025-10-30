@@ -362,7 +362,7 @@ button:hover {
   }
 }
 
-/* Garden Page Layout */
+
 .garden-page {
   display: flex;
   justify-content: center;
@@ -375,7 +375,7 @@ button:hover {
   overflow: hidden;
 }
 
-/* Balance and AutoHarvest section */
+
 .garden-grid-container {
   background-image: url("https://static.vecteezy.com/system/resources/previews/014/572/097/non_2x/background-of-green-grass-field-cartoon-drawing-free-vector.jpg");
   background-size: cover;
