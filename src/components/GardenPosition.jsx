@@ -59,7 +59,7 @@ const GardenPosition = ({
       ) : (
         <div>
           <p className="slot-plant-name">{plant.plantRef?.name}</p>
-
+          <img src={plant.plantRef?.image} alt="" />
           {!ready ? (
             <p className="slot-status">Growing ({formatTime(timeLeft)})</p>
           ) : (

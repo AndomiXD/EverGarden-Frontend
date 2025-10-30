@@ -1,258 +1,185 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* --- GLOBAL RESET --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+body {
+  font-family: "Poppins", sans-serif;
+  background: #f5f8f4;
+  color: #2c3e50;
+  min-height: 100vh;
+  line-height: 1.5;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
-
-/* === Garden Page === */
-.garden-page {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 1.5rem;
-  padding: 2rem;
-  min-height: 70vh;
-  background: linear-gradient(to bottom, #e8f5e9, #f1f8e9);
-}
-
-.loading-text {
-  text-align: center;
-  margin-top: 2rem;
-  color: #555;
-}
-
-/* === Garden Grid === */
-.garden-grid-container {
-  flex: 1;
-  max-width: 800px;
-}
-
-.seed-sidebar-container {
-  width: 300px;
-}
-
-.garden-grid {
-  background-color: #f1f8f6;
-  border: 2px solid #81c784;
-  border-radius: 16px;
-  padding: 1.5rem;
-  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
-}
-
-.garden-title {
-  color: #2e7d32;
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-}
-
-.garden-grid-layout {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
-}
-
-.grid-note {
-  font-size: 0.8rem;
-  color: #777;
-  font-style: italic;
-  margin-top: 0.5rem;
-}
-
-/* === Garden Position === */
-.garden-slot {
-  border-radius: 12px;
-  padding: 1rem;
-  text-align: center;
-  transition: all 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.slot-empty {
-  border: 2px dashed #a5d6a7;
-  background: #f9fff9;
-}
-
-.slot-growing {
-  border: 2px solid #81c784;
-  background: #ffffff;
-}
-
-.slot-ready {
-  border: 2px solid #f9a825;
-  background: #fff8e1;
-}
-
-.garden-slot:hover {
-  transform: translateY(-3px);
+/* --- NAVBAR --- */
+header {
+  background: linear-gradient(90deg, #7ecb91, #4b9c69);
+  padding: 12px 24px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
-.slot-title {
-  font-weight: 600;
-  color: #2e7d32;
-  margin-bottom: 0.5rem;
+nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
 }
 
-.slot-empty-text {
-  color: #9e9e9e;
-  font-style: italic;
-}
-
-.slot-plant-name {
-  font-weight: 600;
-  color: #1b5e20;
-}
-
-.slot-status {
-  color: #555;
-  font-size: 0.85rem;
-  margin-top: 0.3rem;
-}
-
-.harvest-btn {
-  background-color: #388e3c;
+nav a {
   color: white;
-  border: none;
-  padding: 0.4rem 0.8rem;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 8px 14px;
   border-radius: 6px;
-  cursor: pointer;
-  margin-top: 0.5rem;
-  transition: background-color 0.2s;
+  transition: background 0.2s ease, transform 0.1s ease;
 }
 
-.harvest-btn:hover {
-  background-color: #2e7d32;
+nav a:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
 }
 
-/* === Seed Sidebar === */
-.seed-sidebar {
-  background: #fff;
-  border: 2px solid #a5d6a7;
-  border-radius: 16px;
-  padding: 1rem;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-  max-height: 80vh;
-  overflow-y: auto;
+/* Active link (optional) */
+nav a.active {
+  background: rgba(255, 255, 255, 0.4);
 }
 
-.seed-title {
-  font-size: 1.2rem;
-  color: #2e7d32;
-  font-weight: 700;
+/* --- MAIN LAYOUT --- */
+main {
+  padding: 30px 50px;
+}
+
+/* --- BASIC UTILS --- */
+.page-title {
+  font-size: 1.8rem;
+  color: #356b45;
   margin-bottom: 1rem;
 }
 
-.seed-list {
+/* --- HOME PAGE --- */
+.home-page {
+  text-align: center;
+  padding: 80px 20px;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+  align-items: center;
+  justify-content: center;
 }
 
-.seed-card {
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  padding: 0.6rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  background-color: #fdfdfd;
+.home-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #2e7041;
+  margin-bottom: 0.6rem;
 }
 
-.seed-card:hover {
-  background-color: #f9fff9;
-  border-color: #81c784;
+.home-subtitle {
+  font-size: 1.25rem;
+  color: #517b5f;
+  margin-bottom: 2rem;
 }
 
-.seed-card.selected {
-  border: 2px solid #388e3c;
-  background-color: #e8f5e9;
+.home-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-.no-seeds {
-  color: #999;
-  font-style: italic;
-}
-
-.position-input {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #a5d6a7;
-  border-radius: 8px;
-  margin-bottom: 0.5rem;
-  outline: none;
-}
-
-.position-input:focus {
-  border-color: #66bb6a;
-  box-shadow: 0 0 4px #a5d6a7;
-}
-
-.plant-btn {
-  width: 100%;
-  background-color: #43a047;
-  color: #fff;
-  border: none;
-  padding: 0.6rem;
+/* --- BUTTONS --- */
+.btn {
+  padding: 10px 22px;
   border-radius: 8px;
   font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s;
+  text-decoration: none;
+  transition: all 0.2s ease;
 }
 
-.plant-btn:hover {
-  background-color: #2e7d32;
+.btn-primary {
+  background-color: #4b9c69;
+  color: white;
 }
 
-.remove-btn {
-  background-color: #d32f2f;
-  color: #fff;
-  border: none;
-  padding: 0.4rem 0.8rem;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-left: 0.5rem;
-  transition: background-color 0.2s;
+.btn-primary:hover {
+  background-color: #408a5c;
 }
 
-.remove-btn:hover {
-  background-color: #b71c1c;
+.btn-secondary {
+  background-color: #f0f0f0;
+  color: #2e7041;
+}
+
+.btn-secondary:hover {
+  background-color: #e0e0e0;
+}
+
+.btn-outline {
+  border: 2px solid #4b9c69;
+  color: #4b9c69;
+  background: transparent;
+}
+
+.btn-outline:hover {
+  background-color: #4b9c69;
+  color: white;
+}
+
+/* --- SIGNUP PAGE --- */
+.signup-page {
+  max-width: 420px;
+  margin: 60px auto;
+  padding: 40px 30px;
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.signup-title {
+  font-size: 2rem;
+  color: #2e7041;
+  margin-bottom: 0.3rem;
+}
+
+.signup-subtitle {
+  color: #517b5f;
+  margin-bottom: 2rem;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  text-align: left;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #2e7041;
+  margin-bottom: 0.3rem;
+}
+
+.form-input {
+  padding: 10px 12px;
+  border: 1px solid #b8d7c1;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.form-input:focus {
+  border-color: #4b9c69;
+}
+
+.signup-btn {
+  margin-top: 1rem;
+  width: 100%;
 }

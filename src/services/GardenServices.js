@@ -68,42 +68,6 @@ export const ShareGarden = async (title, description) => {
   }
 }
 
-export const GetAllShares = async () => {
-  try {
-    const res = await Client.get("/shares/all")
-    return res.data
-  } catch (error) {
-    console.error("Error fetching shares:", error)
-  }
-}
-
-export const GetUserShares = async () => {
-  try {
-    const res = await Client.get("/shares/user")
-    return res.data
-  } catch (error) {
-    console.error("Error fetching user shares:", error)
-  }
-}
-
-export const UpdateShare = async (id, title, description) => {
-  try {
-    const res = await Client.put(`/shares/${id}`, { title, description })
-    return res.data
-  } catch (error) {
-    console.error("Error updating share:", error)
-  }
-}
-
-export const DeleteShare = async (id) => {
-  try {
-    const res = await Client.delete(`/shares/${id}`)
-    return res.data
-  } catch (error) {
-    console.error("Error deleting share:", error)
-  }
-}
-
 export const GetGardenById = async (id) => {
   try {
     const res = await Client.get(`/gardens/${id}`)

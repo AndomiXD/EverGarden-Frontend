@@ -72,9 +72,29 @@ const GardenPage = () => {
 
   const onDropSeed = async (seed, position) => {
     if (!seed?._id) return
-
     await handlePlant({ plantId: seed._id, position })
   }
+
+  // AutoHarvest active loop
+  useEffect(() => {
+    if (!autoHarvest || !garden?.plants?.length) return
+
+    const interval = setInterval(async () => {
+      const now = new Date().getTime()
+
+      const readyPlants = garden.plants.filter(
+        (p) => new Date(p.expectHarvest).getTime() <= now
+      )
+
+      if (readyPlants.length > 0) {
+        for (const plant of readyPlants) {
+          await handleHarvest(plant.position)
+        }
+      }
+    }, 5000) // checks every 5 seconds
+
+    return () => clearInterval(interval)
+  }, [autoHarvest, garden])
 
   if (loading) return <p className="loading-text">Loading your garden...</p>
 
@@ -93,7 +113,7 @@ const GardenPage = () => {
               checked={autoHarvest}
               onChange={handleToggleAutoHarvest}
             />
-            (Only works when offline)
+            (Works both online & offline)
           </label>
         </div>
 
