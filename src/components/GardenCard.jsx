@@ -1,12 +1,6 @@
 import { useEffect, useState, useRef } from "react"
 
-const GardenPosition = ({
-  position,
-  plant,
-  onHarvest,
-  onRemove,
-  onDropSeed,
-}) => {
+const GardenCard = ({ position, plant, onHarvest, onRemove, onDropSeed }) => {
   const [timeLeft, setTimeLeft] = useState(null)
   const timerRef = useRef(null)
 
@@ -16,11 +10,11 @@ const GardenPosition = ({
       const updateTimeLeft = () => {
         const now = new Date().getTime()
         const harvestTime = new Date(plant.expectHarvest).getTime()
-        const diff = Math.max(0, harvestTime - now)
-        setTimeLeft(diff)
+        const difference = Math.max(0, harvestTime - now)
+        setTimeLeft(difference)
       }
 
-      updateTimeLeft() // initialise immediately
+      updateTimeLeft()
       timerRef.current = setInterval(updateTimeLeft, 1000)
 
       return () => clearInterval(timerRef.current)
@@ -90,4 +84,4 @@ const GardenPosition = ({
   )
 }
 
-export default GardenPosition
+export default GardenCard

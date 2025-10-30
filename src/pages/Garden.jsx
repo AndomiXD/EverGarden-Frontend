@@ -83,7 +83,7 @@ const GardenPage = () => {
       const now = new Date().getTime()
 
       const readyPlants = garden.plants.filter(
-        (p) => new Date(p.expectHarvest).getTime() <= now
+        (plant) => new Date(plant.expectHarvest).getTime() <= now
       )
 
       if (readyPlants.length > 0) {

@@ -105,7 +105,6 @@ const Profile = () => {
 
       <div className="profile-sections">
         <div className="profile-section profile-info-section">
-          <h3 className="section-title">Profile Information</h3>
           <div className="avatar-block">
             <div className="avatar-frame">
               {image ? (
@@ -113,7 +112,6 @@ const Profile = () => {
                   className="avatar-image"
                   src={image}
                   alt="Avatar"
-                  style={{ width: "50px" }}
                   onError={(e) => {
                     e.currentTarget.src = ""
                     setProfileError(
@@ -128,7 +126,7 @@ const Profile = () => {
           </div>
           <form className="profile-form" onSubmit={handleSaveProfile}>
             <label className="form-label">
-              Display Name
+              Username
               <input
                 className="form-input"
                 value={username}
@@ -156,7 +154,7 @@ const Profile = () => {
         </div>
 
         <div className="profile-section password-section">
-          <h3 className="section-title">Change Password</h3>
+          <br />
           {passwordMessage && (
             <div className="notice notice-success">{passwordMessage}</div>
           )}
