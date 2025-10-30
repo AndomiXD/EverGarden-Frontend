@@ -90,7 +90,7 @@ export const toggleAutoHarvest = async () => {
   try {
     const res = await Client.put("/gardens/toggle-autoHarvest")
     return res.data
-  } catch (err) {
-    console.error("Error toggling autoHarvest", err)
+  } catch (error) {
+    console.error("Error toggling autoHarvest", error)
   }
 }
