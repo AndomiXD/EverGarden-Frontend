@@ -35,4 +35,4 @@ A Trello board was used to track development progress and can be viewed [here](h
 ### ***Screenshots***
 ![WireFrame](./public/images/wireframe.png)
 ![ERD](./public/images/ERD.png)
-![componentHierarchy](./public/images/.png)
+![componentHierarchy](./public/images/Component.png)
