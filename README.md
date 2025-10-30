@@ -33,6 +33,6 @@ A Trello board was used to track development progress and can be viewed [here](h
 * NodeJS, Cors, Express, Mongoose, MongoDB, Morgan
 
 ### ***Screenshots***
-![WireFrame](./images/wireframe.png)
-![ERD](./images/ERD.png)
-![componentHierarchy](./images/Component.png)
+![WireFrame](./public/images/wireframe.png)
+![ERD](./public/images/ERD.png)
+![componentHierarchy](./public/images/.png)
