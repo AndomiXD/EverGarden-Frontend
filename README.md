@@ -28,11 +28,18 @@ A Trello board was used to track development progress and can be viewed [here](h
 ### ***Deployed version***
 ##### [EverGarden]()
 
-### ***Technologies***
-* JavaScript
-* NodeJS, Cors, Express, Mongoose, MongoDB, Morgan
+### ***Tools & Technologies***
+Frontend: React, React Router, Axios
+
+Backend: Node.js, Express.js, MongoDB, Mongoose
+
+Utilities: CORS, Morgan
+
+Version Control: Git & GitHub
+
+Project Management: Trello
 
 ### ***Screenshots***
-![WireFrame](./images/wireframe.png)
-![ERD](./images/ERD.png)
-![componentHierarchy](./images/Component.png)
+![WireFrame](./public/images/wireframe.png)
+![ERD](./public/images/ERD.png)
+![componentHierarchy](./public/images/Component.png)
